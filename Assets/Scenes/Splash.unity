@@ -225,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5f1360f3db114438f112d5dd711abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isScreen: 0
+  screenChange: 1
 --- !u!1 &1953057448
 GameObject:
   m_ObjectHideFlags: 0

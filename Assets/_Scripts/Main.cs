@@ -6,28 +6,23 @@ using UnityEngine.SceneManagement;
 public class Main : MonoBehaviour
 {
     [Header("Inscribed")]
-    public bool isScreen = false;
+    public bool screenChange = false;
 
     private void Awake()
     {
-        if (isScreen)
+        if (screenChange)
             Invoke(nameof(ScreenLoader), 3f);
     }
 
     void ScreenLoader()
     {
-        SceneManager.LoadScene("_Gameplay");
-    }
+        Scene scene = SceneManager.GetActiveScene();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+        if (scene == SceneManager.GetSceneByName("Credits"))
+        {
+            SceneManager.LoadScene("Menu");
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        SceneManager.LoadScene(scene.buildIndex + 1);
     }
 }
