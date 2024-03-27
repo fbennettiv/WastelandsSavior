@@ -21,6 +21,7 @@ public class Main : MonoBehaviour
         if (scene == SceneManager.GetSceneByName("Credits"))
         {
             SceneManager.LoadScene("Menu");
+            return;
         }
 
         SceneManager.LoadScene(scene.buildIndex + 1);
