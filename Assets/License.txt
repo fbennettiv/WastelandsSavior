@@ -1,8 +1,14 @@
-Author: Kenney
+Author: Kenney Vleugel
 Date: 3/11/2024
 URL: https://kenney.nl/assets/graveyard-kit
 License: Creative Commons CC0
 Import File: kenney_graveyard-kit
+-----------------------------------------------------------------------------
+Author: Kenney Vleugel
+Date: 3/27/2024
+URL: https://kenney.nl/assets/weapon-pack
+License: Creative Commons CC0
+Import File: kenney_weapon-pack
 -----------------------------------------------------------------------------
 Author: Jeremy Bond
 Date: 1/17/2024
