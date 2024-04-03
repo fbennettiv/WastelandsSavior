@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{C3D8B917-B4DD-0149-08F0-0302F87092D5}</ProjectGuid>
+    <ProjectGuid>{83FEF2B2-74D3-8513-D2A6-88DA3EAFE3FA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -76,6 +76,7 @@
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
+    <Compile Include="Assets\__Scripts\Scene\ButtonController.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
@@ -86,12 +87,14 @@
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
+    <Compile Include="Assets\__Scripts\Hero\HeroController.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\__Scripts\Main.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
+    <Compile Include="Assets\__Scripts\Scene\SceneTimer.cs" />
     <Compile Include="Assets\Resources\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +107,7 @@
     <None Include="Assets\Resources\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\Resources\kenney_graveyard-kit\License.txt" />
     <None Include="Assets\Resources\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\Resources\kenney_weapon-pack\License.txt" />
     <None Include="Assets\License.txt" />
     <None Include="Assets\Resources\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\Resources\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
