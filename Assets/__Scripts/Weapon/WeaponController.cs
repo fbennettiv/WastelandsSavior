@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour, IWeapon
 {
-    public enum eWeapon { none, pistol, pistolR, pistolL, m_gun, m_gunR, m_gunL, knife, knifeR, knifeL }
+    public enum eWeapon { none, pistol, m_gun, knife }
 
-    private GameObject pistolR,pistolL, sword, m_gun, torso;
+    private GameObject pistolR, pistolL, sword, m_gun, torso;
     private HeroController hero;
 
     public bool LActive;
@@ -16,25 +16,23 @@ public class WeaponController : MonoBehaviour, IWeapon
     void Start()
     {
         // Finding the weapons Transform components
-        Transform pistolRight = transform.Find("pistol_Left");
-        Transform pistolLeft = transform.Find("pistol_Right");
+        pistolL = GameObject.Find("pistol_Left");
+        pistolR = GameObject.Find("pistol_Right");
 
-        if (pistolRight != null)
+        if (pistolR == null)
         {
             Debug.LogError("Could not find pistol_Right child of arm_right");
             return;
         }
-        pistolR = pistolRight.gameObject;
-        if (pistolLeft != null)
+        if (pistolL == null)
         {
             Debug.LogError("Could not find pistol_Left child of arm_Left");
             return;
         }
-        pistolL = pistolLeft.gameObject;
 
         // Finding the Hero component
         hero = GetComponentInParent<HeroController>();
-        if (hero == null) 
+        if (hero == null)
         {
             Debug.LogError("Could not find parent component Dray.");
             return;
@@ -52,6 +50,75 @@ public class WeaponController : MonoBehaviour, IWeapon
         //pistolL.SetActive(hero.mode == HeroController.eMode.shoot);
         //pistolR.SetActive(hero.mode == HeroController.eMode.shoot);
 
+        if (hero.isWeapon) { return; }
+        GameObject weapon = hero.itemPickUp;
 
+        // DO NOT RETRIVE GAMEOBJECT (or find alternative to current problem)
+        // check if the item has a "weapon tag" like in PickUp
+        // Fix communication between the herocontroller and weaponController
+        // hardcoding names is sloppy, dont do that shit
+        if (!weapon.CompareTag("Weapon")) return;
+
+        if (BActive) return;
+        switch (weapon.name)
+        {
+            /*case "knife":
+                if (!pistolR.activeInHierarchy)
+                {
+                    RActive = true;
+                    pistolR.SetActive(true);
+                    hero.weapon = HeroController.eWeapon.knife;
+                }
+                if (!pistolR.activeInHierarchy)
+                {
+                    RActive = true;
+                    pistolR.SetActive(true);
+                    hero.weapon = HeroController.eWeapon.knife;
+                }
+                break;*/
+            case "pistol":
+                if (!pistolR.activeInHierarchy)
+                {
+                    RActive = true;
+                    pistolR.SetActive(true);
+                    hero.weapon = HeroController.eWeapon.pistol;
+                }
+                else if (!pistolL.activeInHierarchy)
+                {
+                    LActive = true;
+                    pistolL.SetActive(true);
+                    hero.weapon = HeroController.eWeapon.pistol;
+                }
+                else if (pistolR.activeInHierarchy && pistolL.activeInHierarchy)
+                {
+                    BActive = true;
+                    hero.weapon = HeroController.eWeapon.pistol;
+                }
+                break;
+            /*
+            case "machinegun":
+                if (!pistolR.activeInHierarchy)
+                {
+                    RActive = true;
+                    pistolR.SetActive(true);
+                    hero.weapon = HeroController.eWeapon.pistol;
+                }
+                else if(!pistolL.activeInHierarchy)
+                {
+                    LActive = true;
+                    pistolL.SetActive(true);
+                    hero.weapon = HeroController.eWeapon.pistol;
+                }
+                else if(pistolR.activeInHierarchy && pistolL.activeInHierarchy)
+                {
+                    BActive = true;
+                    hero.weapon = HeroController.eWeapon.pistol;
+                }
+                break;*/
+            default:
+                hero.weapon = HeroController.eWeapon.none;
+                Debug.LogError("No hero weapon" +  weapon.name);
+                break;
+        }
     }
 }

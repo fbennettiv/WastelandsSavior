@@ -8,6 +8,9 @@ TagManager:
   - Enemies
   - Hero
   - Obstacles
+  - Items
+  - Weapon
+  - PowerUp
   layers:
   - Default
   - TransparentFX

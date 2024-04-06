@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4309727951868772418}
   - component: {fileID: 3432348708103820857}
   - component: {fileID: 3572550975531790735}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Mesh2_Group3_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,9 +95,10 @@ GameObject:
   m_Component:
   - component: {fileID: 912459779037205428}
   - component: {fileID: 5904670442403323765}
-  m_Layer: 0
+  - component: {fileID: -8760974803473077649}
+  m_Layer: 14
   m_Name: pistol
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,6 +147,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &-8760974803473077649
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4357379053306201670}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7705892449794436866
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +179,7 @@ GameObject:
   - component: {fileID: 6819522207087553158}
   - component: {fileID: 1146492367678452475}
   - component: {fileID: 2968498607384782139}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Mesh1_Group2_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

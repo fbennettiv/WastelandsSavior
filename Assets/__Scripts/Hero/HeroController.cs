@@ -4,15 +4,13 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.FilePathAttribute;
 
 public class HeroController : MonoBehaviour, IWeapon
 {
     public enum eMode { idle, walk, shoot, die }
 
     // Implementing IWeapon
-    public enum eWeapon { none, pistol, pistolR, pistolL, m_gun, m_gunR, m_gunL, knife, knifeR, knifeL }
+    public enum eWeapon { none, pistol, m_gun, knife}
 
     [Header("Inscribed")]
     public float speed = 30;
@@ -27,6 +25,8 @@ public class HeroController : MonoBehaviour, IWeapon
     private Animator anim;
     public eMode mode;
     public eWeapon weapon;
+    public GameObject itemPickUp;
+    public bool isWeapon = false;
     [SerializeField]
     private float _health = 0;
     public float health
@@ -109,9 +109,9 @@ public class HeroController : MonoBehaviour, IWeapon
             death = false;
         }
 
-        eMode previousMode = mode;
 
         // Modes for animations
+        eMode previousMode = mode;
         switch (mode)
         {
             case eMode.idle:
@@ -182,6 +182,29 @@ public class HeroController : MonoBehaviour, IWeapon
             case eMode.die:
                 death = true;
                 anim.Play("die", 0);
+                break;
+        }
+    }
+
+    void OnTriggerEnter(Collider trigger)
+    {
+        PickUp pickUP = trigger.gameObject.GetComponent<PickUp>();
+         isWeapon = false;
+
+        if (pickUP == null) return;
+
+        switch (pickUP.item)
+        {
+            case PickUp.eType.weapon:
+                isWeapon = true;
+                itemPickUp = trigger.gameObject;
+                break;
+            /*case PickUp.eType.health:
+                break;
+            case PickUp.eType.gem:
+                break;*/
+            default:
+                Debug.LogError("No PickUp item" +  pickUP.item);
                 break;
         }
     }
