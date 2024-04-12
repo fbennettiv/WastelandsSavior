@@ -10,7 +10,7 @@ public class HeroController : MonoBehaviour, IWeapon
     public enum eMode { idle, walk, shoot, die }
 
     // Implementing IWeapon
-    public enum eWeapon { none, pistol, m_gun, knife}
+    public enum eWeapon { none, pistol, m_gun, knife }
 
     [Header("Inscribed")]
     public float speed = 30;
@@ -21,11 +21,20 @@ public class HeroController : MonoBehaviour, IWeapon
     private bool shoot;
 
     [Header("Dynamic")]
+    private Vector3 _forwardPos;
+    public Vector3 forwardPos
+    {
+        get { return _forwardPos; }
+        set { _forwardPos = value; }
+    }
     private Vector3 mouseDir;
     private Animator anim;
     public eMode mode;
     public eWeapon weapon;
-    public GameObject itemPickUp;
+    [HideInInspector]
+    public Quaternion rotation;
+    [HideInInspector]
+    public PickUp pickUp;
     public bool isWeapon = false;
     [SerializeField]
     private float _health = 0;
@@ -40,7 +49,10 @@ public class HeroController : MonoBehaviour, IWeapon
     // Axis for directional input
     private float hAxis = 0;
     private float vAxis = 0;
-    
+
+    public delegate void WeaponFireDelegate();
+    public event WeaponFireDelegate fireEvent;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -49,7 +61,8 @@ public class HeroController : MonoBehaviour, IWeapon
         mode = eMode.idle;
         weapon = eWeapon.none;
         mouseDir = new Vector3();
-        shoot = Input.GetMouseButton(0);
+        _forwardPos = new Vector3();
+
         camMain = Camera.main;
         _health = _maxHealth;
     }
@@ -77,20 +90,23 @@ public class HeroController : MonoBehaviour, IWeapon
         // Mouse Rotation
         mouseDir = camMain.ScreenToWorldPoint(Input.mousePosition);
         Vector3 tXZ = new Vector3(transform.position.x, 0, transform.position.z);
-        Vector3 relativePos = new Vector3(mouseDir.x, 0, mouseDir.z) - tXZ;
-        Quaternion rotation = Quaternion.LookRotation(relativePos, transform.up);
-        rotation = Quaternion.Slerp(transform.rotation, rotation, lookSpeed);
+        _forwardPos = new Vector3(mouseDir.x, 0, mouseDir.z) - tXZ;
+        rotation = Quaternion.LookRotation(_forwardPos, transform.up);
+        Quaternion rotationSlerp = Quaternion.Slerp(transform.rotation, rotation, lookSpeed);
 
         // Change transform.position based on the axis
         Vector3 pos = transform.position;
         pos.x += hAxis * speed * Time.deltaTime;
         pos.z += vAxis * speed * Time.deltaTime;
         // Move and rotate the Hero
-        rigid.Move(pos, rotation);
+        rigid.Move(pos, rotationSlerp);
     }
 
     void AnimationController()
     {
+        // Shooting Trigger
+        shoot = Input.GetMouseButton(0);
+
         // Movement/Death modes
         if (death) { mode = eMode.die; }
         else if (shoot)
@@ -98,7 +114,7 @@ public class HeroController : MonoBehaviour, IWeapon
             mode = eMode.shoot;
             death = false;
         }
-        else if(hAxis != 0 || vAxis != 0)
+        else if (hAxis != 0 || vAxis != 0)
         {
             mode = eMode.walk;
             death = false;
@@ -109,14 +125,13 @@ public class HeroController : MonoBehaviour, IWeapon
             death = false;
         }
 
-
         // Modes for animations
         eMode previousMode = mode;
         switch (mode)
         {
             case eMode.idle:
                 anim.Play("idle", 0);
-               // anim.Play("holding-both-shoot", 0);
+                // anim.Play("holding-both-shoot", 0);
                 anim.speed = 1;
                 break;
             case eMode.walk:
@@ -144,9 +159,23 @@ public class HeroController : MonoBehaviour, IWeapon
                         }
                         break;
                     case eWeapon.pistol:
-                        if (weaponCon.LActive)
+                        if (weaponCon.RActive)
+                        {
+                            anim.Play("holding-both-shoot", 0);
+                            anim.speed = 1;
+                            fireEvent();
+                        }
+                        else if (weaponCon.LActive)
                         {
                             anim.Play("holding-left-shoot", 0);
+                            anim.speed = 1;
+                            fireEvent();
+                        }
+                        break;
+                    /*case eWeapon.m_gun:
+                        if (weaponCon.LActive)
+                        {
+                            anim.Play("holding-both-shoot", 0);
                             anim.speed = 1;
                         }
                         else if (weaponCon.RActive)
@@ -154,29 +183,7 @@ public class HeroController : MonoBehaviour, IWeapon
                             anim.Play("holding-right-shoot", 0);
                             anim.speed = 1;
                         }
-                        else if (weaponCon.BActive)
-                        {
-                            anim.Play("holding-both-shoot", 0);
-                            anim.speed = 1;
-                        }
-                        break;
-                    case eWeapon.m_gun:
-                        if (weaponCon.LActive)
-                        {
-                            anim.Play("holding-left-shoot", 0);
-                            anim.speed = 1;
-                        }
-                        else if (weaponCon.RActive)
-                        {
-                            anim.Play("holding-right-shoot", 0);
-                            anim.speed = 1;
-                        }
-                        else if (weaponCon.BActive)
-                        {
-                            anim.Play("holding-both-shoot", 0);
-                            anim.speed = 1;
-                        }
-                        break;
+                        break;*/
                 }
                 break;
             case eMode.die:
@@ -188,23 +195,23 @@ public class HeroController : MonoBehaviour, IWeapon
 
     void OnTriggerEnter(Collider trigger)
     {
-        PickUp pickUP = trigger.gameObject.GetComponent<PickUp>();
-         isWeapon = false;
+        pickUp = trigger.gameObject.GetComponent<PickUp>();
+        isWeapon = false;
 
-        if (pickUP == null) return;
+        if (pickUp == null) { Debug.LogError("PickUp was null (HeroController"); return; }
+        if (pickUp.item == PickUp.eType.none) return;
 
-        switch (pickUP.item)
+        switch (pickUp.item)
         {
             case PickUp.eType.weapon:
                 isWeapon = true;
-                itemPickUp = trigger.gameObject;
                 break;
             /*case PickUp.eType.health:
                 break;
             case PickUp.eType.gem:
                 break;*/
             default:
-                Debug.LogError("No PickUp item" +  pickUP.item);
+                Debug.LogError("No PickUp item" + pickUp.item);
                 break;
         }
     }

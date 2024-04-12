@@ -10,7 +10,7 @@ TagManager:
   - Obstacles
   - Items
   - Weapon
-  - PowerUp
+  - ProjectileHero
   layers:
   - Default
   - TransparentFX

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour, IWeapon
 {
-    public enum eWeapon { none, pistol, m_gun, knife }
+    private enum eWeapon { none, pistol, m_gun, knife }
 
     private GameObject pistolR, pistolL, sword, m_gun, torso;
     private HeroController hero;
+    private PickUp pickUp;
 
     public bool LActive;
     public bool RActive;
@@ -44,57 +45,54 @@ public class WeaponController : MonoBehaviour, IWeapon
     // Update is called once per frame
     void Update()
     {
-        //pistolL.SetActive(hero.mode == HeroController.eMode.shoot && hero.weapon == HeroController.eWeapon.pistolL);
-        //pistolR.SetActive(hero.mode == HeroController.eMode.shoot && hero.weapon == HeroController.eWeapon.pistolR);
+        if (!hero.isWeapon) { return; }
+        pickUp = hero.pickUp;
 
-        //pistolL.SetActive(hero.mode == HeroController.eMode.shoot);
-        //pistolR.SetActive(hero.mode == HeroController.eMode.shoot);
+        // Problems
+        /*-----------------------------------------------*/
+        /* make sure knife has appropriate adjustments due to animations
+         * make sure a pistol cannot be instantiated if there is an active L or R or B */
 
-        if (hero.isWeapon) { return; }
-        GameObject weapon = hero.itemPickUp;
+        if (pickUp.weaponType == PickUp.eWeapon.none) return;
 
-        // DO NOT RETRIVE GAMEOBJECT (or find alternative to current problem)
-        // check if the item has a "weapon tag" like in PickUp
-        // Fix communication between the herocontroller and weaponController
-        // hardcoding names is sloppy, dont do that shit
-        if (!weapon.CompareTag("Weapon")) return;
-
-        if (BActive) return;
-        switch (weapon.name)
+        if (RActive && LActive) return;
+        switch (pickUp.weaponType)
         {
-            /*case "knife":
-                if (!pistolR.activeInHierarchy)
-                {
-                    RActive = true;
-                    pistolR.SetActive(true);
-                    hero.weapon = HeroController.eWeapon.knife;
-                }
-                if (!pistolR.activeInHierarchy)
-                {
-                    RActive = true;
-                    pistolR.SetActive(true);
-                    hero.weapon = HeroController.eWeapon.knife;
-                }
-                break;*/
-            case "pistol":
+            case PickUp.eWeapon.pistol:
                 if (!pistolR.activeInHierarchy)
                 {
                     RActive = true;
                     pistolR.SetActive(true);
                     hero.weapon = HeroController.eWeapon.pistol;
+                    pickUp.weaponType = PickUp.eWeapon.none;
                 }
                 else if (!pistolL.activeInHierarchy)
                 {
                     LActive = true;
                     pistolL.SetActive(true);
                     hero.weapon = HeroController.eWeapon.pistol;
-                }
-                else if (pistolR.activeInHierarchy && pistolL.activeInHierarchy)
-                {
-                    BActive = true;
-                    hero.weapon = HeroController.eWeapon.pistol;
+                    pickUp.weaponType = PickUp.eWeapon.none;
                 }
                 break;
+
+            // Yet to be implemented
+            /*case "knife":
+                if (!pistolR.activeInHierarchy)
+                {
+                    RActive = true;
+                    pistolR.SetActive(true);
+                    hero.weapon = HeroController.eWeapon.knife;
+                    pickUp.weaponType = PickUp.eWeapon.none;
+                }
+                if (!pistolR.activeInHierarchy)
+                {
+                    RActive = true;
+                    pistolR.SetActive(true);
+                    hero.weapon = HeroController.eWeapon.knife;
+                    pickUp.weaponType = PickUp.eWeapon.none;
+                }
+                break;*/
+
             /*
             case "machinegun":
                 if (!pistolR.activeInHierarchy)
@@ -102,22 +100,25 @@ public class WeaponController : MonoBehaviour, IWeapon
                     RActive = true;
                     pistolR.SetActive(true);
                     hero.weapon = HeroController.eWeapon.pistol;
+                    pickUp.weaponType = PickUp.eWeapon.none;
                 }
                 else if(!pistolL.activeInHierarchy)
                 {
                     LActive = true;
                     pistolL.SetActive(true);
                     hero.weapon = HeroController.eWeapon.pistol;
+                    pickUp.weaponType = PickUp.eWeapon.none;
                 }
                 else if(pistolR.activeInHierarchy && pistolL.activeInHierarchy)
                 {
                     BActive = true;
                     hero.weapon = HeroController.eWeapon.pistol;
+                    pickUp.weaponType = PickUp.eWeapon.none;
                 }
                 break;*/
             default:
                 hero.weapon = HeroController.eWeapon.none;
-                Debug.LogError("No hero weapon" +  weapon.name);
+                Debug.LogError("No hero weapon" + pickUp.name);
                 break;
         }
     }

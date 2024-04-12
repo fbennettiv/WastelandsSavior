@@ -13,6 +13,7 @@ Import File: kenney_weapon-pack
 Author: Jeremy Bond
 Date: 1/17/2024
 Book: Introduction to Game Design, Prototyping and Development
+Script: Gun
 -----------------------------------------------------------------------------
 Author: Jebediah Pavleas, Jack Keng-Wei Change, Kelvin Sung, and Robert Zhu
 Date: 3/31/2024
